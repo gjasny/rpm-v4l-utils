@@ -1,17 +1,15 @@
 Name:           v4l-utils
-Version:        0.8.3
-Release:        2%{?dist}
+Version:        0.8.4
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
-Source1:        qv4l2.desktop
-Source2:        qv4l2.svg
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  qt4-devel libsysfs-devel kernel-headers desktop-file-utils
-# For /etc/udev/rules.d ownership
+BuildRequires:  libjpeg-devel qt4-devel libsysfs-devel kernel-headers
+BuildRequires:  desktop-file-utils
+# For /lib/udev/rules.d ownership
 Requires:       udev
 Requires:       libv4l = %{version}-%{release}
 
@@ -88,19 +86,8 @@ make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" \
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install PREFIX=%{_prefix} LIBDIR=%{_libdir} DESTDIR=$RPM_BUILD_ROOT
-# below is the desktop file and icon stuff.
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications \
-  %{SOURCE1}
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
-install -p -m 644 %{SOURCE2} \
-  $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/qv4l2.desktop
 
 
 %post -n libv4l -p /sbin/ldconfig
@@ -126,7 +113,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_sysconfdir}/rc_keymaps
 %config(noreplace) %{_sysconfdir}/rc_keymaps/*
 %config(noreplace) %{_sysconfdir}/rc_maps.cfg
-%config(noreplace) %{_sysconfdir}/udev/rules.d/70-infrared.rules
+/lib/udev/rules.d/70-infrared.rules
 %{_bindir}/cx18-ctl
 %{_bindir}/ir-keytable
 %{_bindir}/ivtv-ctl
@@ -163,6 +150,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Jun  1 2011 Hans de Goede <hdegoede@redhat.com> 0.8.4-1
+- New upstream release 0.8.4
+
 * Sat Mar 12 2011 Hans de Goede <hdegoede@redhat.com> 0.8.3-2
 - Add a .desktop file for qv4l2
 - Add fully versioned Requires on libv4l to other (sub)packages
