@@ -1,5 +1,5 @@
 Name:           v4l-utils
-Version:        0.8.4
+Version:        0.8.5
 Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
@@ -132,7 +132,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc README
 %{_bindir}/qv4l2
 %{_datadir}/applications/qv4l2.desktop
-%{_datadir}/icons/hicolor/scalable/apps/qv4l2.svg
+%{_datadir}/icons/hicolor/*/apps/qv4l2.*
 
 %files -n libv4l
 %defattr(-,root,root,-)
@@ -149,6 +149,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Jul 17 2011 Hans de Goede <hdegoede@redhat.com> 0.8.5-1
+- New upstream release 0.8.5
+- Fixes rhbz#711492
+
 * Wed Jun  1 2011 Hans de Goede <hdegoede@redhat.com> 0.8.4-1
 - New upstream release 0.8.4
 
