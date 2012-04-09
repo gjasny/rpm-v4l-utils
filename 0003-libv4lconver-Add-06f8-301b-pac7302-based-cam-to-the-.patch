@@ -1,0 +1,28 @@
+From e681916636373959c39b3f13a44e145106119b68 Mon Sep 17 00:00:00 2001
+From: Hans de Goede <hdegoede@redhat.com>
+Date: Sun, 8 Apr 2012 11:27:52 +0200
+Subject: [PATCH 3/5] libv4lconver: Add 06f8:301b pac7302 based cam to the
+ quirk table
+
+Reported-by: Jean-Francois Moine <moinejf@free.fr>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ lib/libv4lconvert/control/libv4lcontrol.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/lib/libv4lconvert/control/libv4lcontrol.c b/lib/libv4lconvert/control/libv4lcontrol.c
+index 701483b..25b502a 100644
+--- a/lib/libv4lconvert/control/libv4lcontrol.c
++++ b/lib/libv4lconvert/control/libv4lcontrol.c
+@@ -203,6 +203,8 @@ static const struct v4lcontrol_flags_info v4lcontrol_flags[] = {
+ 		V4LCONTROL_ROTATED_90_JPEG | V4LCONTROL_WANTS_WB, 1500 },
+ 	{ 0x06f8, 0x3009, 0,    NULL, NULL,
+ 		V4LCONTROL_ROTATED_90_JPEG | V4LCONTROL_WANTS_WB, 1500 },
++	{ 0x06f8, 0x301b, 0,    NULL, NULL,
++		V4LCONTROL_ROTATED_90_JPEG | V4LCONTROL_WANTS_WB, 1500 },
+ 	{ 0x145f, 0x013c, 0,    NULL, NULL,
+ 		V4LCONTROL_ROTATED_90_JPEG | V4LCONTROL_WANTS_WB, 1500 },
+ 	/* Pac7311 based devices */
+-- 
+1.7.9.3
+

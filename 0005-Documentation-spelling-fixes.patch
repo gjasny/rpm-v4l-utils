@@ -1,0 +1,66 @@
+From 34da390c9b260fc94a1bf6a5dc9a574d09f6e6d1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ville=20Skytt=C3=A4?= <ville.skytta@iki.fi>
+Date: Mon, 9 Apr 2012 09:03:53 +0200
+Subject: [PATCH 5/5] Documentation spelling fixes
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ README.lib                 |    8 ++++----
+ README.lib-multi-threading |    2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/README.lib b/README.lib
+index 09638d4..bdafd6d 100644
+--- a/README.lib
++++ b/README.lib
+@@ -4,7 +4,7 @@ Introduction
+ libv4l is a collection of libraries which adds a thin abstraction layer on
+ top of video4linux2 devices. The purpose of this (thin) layer is to make it
+ easy for application writers to support a wide variety of devices without
+-having to write seperate code for different devices in the same class.
++having to write separate code for different devices in the same class.
+ 
+ All libv4l components are licensed under the GNU Lesser General Public
+ License version 2 or (at your option) any later version.
+@@ -121,7 +121,7 @@ would need to be extended with many more often chip dependent formats, like
+ the bayer compression used by the spca561 and the (different) compression used
+ by the pac207 and the (again different) compression used by the sn9c102. Adding
+ support for all these formats should not be done at the application level, as
+-then it needs to be written for each application seperately. Licensing issues
++then it needs to be written for each application separately. Licensing issues
+ with the decompressors will then also become a problem as just cut and pasting
+ from one application to another is bound to hit license incompatibilities.
+ 
+@@ -156,14 +156,14 @@ Q: Why should I use libv4l2 in my app instead of direct device access
+    combined with libv4lconvert?
+ A: libv4l2 is mainly meant for quickly and easily adding support for more
+ pixelformats to existing v4l2 applications. So if you feel better directly
+-accessing the device in combination with libv4lconvert thats fine too.
++accessing the device in combination with libv4lconvert that's fine too.
+ 
+ Notice that libv4l2 also does emulation of the read() call on devices which
+ do not support it in the driver. In the background this uses mmap buffers
+ (even on devices which do support the read call). This mmap gives libv4lconvert
+ zero-copy access to the captured frame, and then it can write the converted
+ data directly to the buffer the application provided to v4l2_read(). Thus
+-another reason to use liv4l2 is to get the no memcpy advantage of the mmap
++another reason to use libv4l2 is to get the no memcpy advantage of the mmap
+ capture method combined with the simplicity of making a simple read() call.
+ 
+ 
+diff --git a/README.lib-multi-threading b/README.lib-multi-threading
+index 93b393c..e444dd4 100644
+--- a/README.lib-multi-threading
++++ b/README.lib-multi-threading
+@@ -1,7 +1,7 @@
+ libv4lconvert is not safe for using one convert instance as returned by
+ v4lconvert_create from multiple threads, if you want to use one v4lconvert
+ instance from multiple threads you must provide your own locking and make
+-sure no simultanious calls are made.
++sure no simultaneous calls are made.
+ 
+ libv4l1 and libv4l2 are safe for multithread use *under* *the* *following*
+ *conditions* :
+-- 
+1.7.9.3
+

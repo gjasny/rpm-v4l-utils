@@ -1,12 +1,18 @@
 Name:           v4l-utils
-Version:        0.8.5
-Release:        2%{?dist}
+Version:        0.8.7
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
+# Bugfixes from upstream git, these can all be dropped with the next release
+Patch1:         0001-libv4lconver-tinyjpeg-Fix-out-of-bounds-array-usage.patch
+Patch2:         0002-tinyjpeg-Better-luminance-quantization-table-for-Pix.patch
+Patch3:         0003-libv4lconver-Add-06f8-301b-pac7302-based-cam-to-the-.patch
+Patch4:         0004-libv4lconvert-Use-bytesperline-instead-of-width.patch
+Patch5:         0005-Documentation-spelling-fixes.patch
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
 # For /lib/udev/rules.d ownership
 Requires:       udev
@@ -77,6 +83,11 @@ developing applications that use libv4l.
 
 %prep
 %setup -q
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 
 %build
@@ -114,6 +125,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/rc_maps.cfg
 /lib/udev/rules.d/70-infrared.rules
 %{_bindir}/cx18-ctl
+%{_bindir}/dvb*
 %{_bindir}/ir-keytable
 %{_bindir}/ivtv-ctl
 %{_bindir}/v4l2-ctl
@@ -149,6 +161,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Apr  9 2012 Hans de Goede <hdegoede@redhat.com> - 0.8.7-1
+- New upstream release 0.8.7
+- Fixes rhbz#807656
+
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
