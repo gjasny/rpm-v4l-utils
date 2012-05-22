@@ -1,5 +1,5 @@
 Name:           v4l-utils
-Version:        0.8.7
+Version:        0.8.8
 Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
@@ -8,11 +8,18 @@ License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
 # Bugfixes from upstream git, these can all be dropped with the next release
-Patch1:         0001-libv4lconver-tinyjpeg-Fix-out-of-bounds-array-usage.patch
-Patch2:         0002-tinyjpeg-Better-luminance-quantization-table-for-Pix.patch
-Patch3:         0003-libv4lconver-Add-06f8-301b-pac7302-based-cam-to-the-.patch
-Patch4:         0004-libv4lconvert-Use-bytesperline-instead-of-width.patch
-Patch5:         0005-Documentation-spelling-fixes.patch
+Patch1:         0001-dvb-Fix-spelling-errors-found-by-lintian.patch
+Patch2:         0002-libv4lconvert-Fix-decoding-of-160x120-Pixart-JPEG-im.patch
+Patch3:         0003-Revert-tinyjpeg-Better-luminance-quantization-table-.patch
+Patch4:         0004-libv4lconvert-Dynamic-quantization-tables-for-Pixart.patch
+Patch5:         0005-libv4lconvert-Drop-Pixart-JPEG-frames-with-changing-.patch
+Patch6:         0006-libv4lconvert-Further-Pixart-JPEG-decompression-twea.patch
+Patch7:         0007-libv4lconvert-Fix-interpretation-of-bit-7-of-the-Pix.patch
+Patch8:         0008-libv4lcontrol-Add-another-USB-ID-to-ASUS-table.patch
+Patch9:         0009-libv4lcontrol-Add-Lenovo-Thinkpad-X220-Tablet-to-ups.patch
+Patch10:        0010-libv4l2-Improve-VIDIOC_-_FMT-logging.patch
+Patch11:        0011-libv4lconvert-replace-strndupa-with-more-portable-st.patch
+Patch12:        0012-libdvbv5-Add-missing-includes.patch
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
 # For /lib/udev/rules.d ownership
 Requires:       udev
@@ -88,6 +95,13 @@ developing applications that use libv4l.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
 
 
 %build
@@ -161,6 +175,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue May 22 2012 Hans de Goede <hdegoede@redhat.com> - 0.8.8-1
+- New upstream release 0.8.8
+- Add patches from upstream git to improve Pixart JPEG decoding
+- Add patch from upstream git to fix building with latest kernels (rhbz#823863)
+
 * Mon Apr  9 2012 Hans de Goede <hdegoede@redhat.com> - 0.8.7-1
 - New upstream release 0.8.7
 - Fixes rhbz#807656
