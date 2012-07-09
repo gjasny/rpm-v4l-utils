@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        0.8.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -20,6 +20,8 @@ Patch9:         0009-libv4lcontrol-Add-Lenovo-Thinkpad-X220-Tablet-to-ups.patch
 Patch10:        0010-libv4l2-Improve-VIDIOC_-_FMT-logging.patch
 Patch11:        0011-libv4lconvert-replace-strndupa-with-more-portable-st.patch
 Patch12:        0012-libdvbv5-Add-missing-includes.patch
+Patch13:        0013-libv4l2-Ensure-we-always-set-buf-length-when-convert.patch
+Patch14:        0014-libv4l2-dqbuf-Don-t-requeue-buffers-which-we-are-ret.patch
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
 # For /lib/udev/rules.d ownership
 Requires:       udev
@@ -102,6 +104,8 @@ developing applications that use libv4l.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
+%patch14 -p1
 
 
 %build
@@ -175,6 +179,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Jul  9 2012 Hans de Goede <hdegoede@redhat.com> - 0.8.8-2
+- Cherry-pick 2 patches from upstream git fixing an exotic crash (rhbz#838279)
+
 * Tue May 22 2012 Hans de Goede <hdegoede@redhat.com> - 0.8.8-1
 - New upstream release 0.8.8
 - Add patches from upstream git to improve Pixart JPEG decoding
