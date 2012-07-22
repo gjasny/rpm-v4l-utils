@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        0.8.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -179,6 +179,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Jul 22 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.8-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Mon Jul  9 2012 Hans de Goede <hdegoede@redhat.com> - 0.8.8-2
 - Cherry-pick 2 patches from upstream git fixing an exotic crash (rhbz#838279)
 
