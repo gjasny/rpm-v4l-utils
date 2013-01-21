@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        0.8.8
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -179,6 +179,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Jan 21 2013 Adam Tkac <atkac redhat com> - 0.8.8-5
+- rebuild due to "jpeg8-ABI" feature drop
+
 * Fri Dec 21 2012 Adam Tkac <atkac redhat com> - 0.8.8-4
 - rebuild against new libjpeg
 
