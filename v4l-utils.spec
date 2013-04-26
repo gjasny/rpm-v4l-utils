@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        0.8.8
-Release:        7%{?dist}
+Release:        6%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -141,7 +141,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{_sysconfdir}/rc_keymaps
 %config(noreplace) %{_sysconfdir}/rc_keymaps/*
 %config(noreplace) %{_sysconfdir}/rc_maps.cfg
-/usr/lib/udev/rules.d/70-infrared.rules
+/lib/udev/rules.d/70-infrared.rules
 %{_bindir}/cx18-ctl
 %{_bindir}/dvb*
 %{_bindir}/ir-keytable
@@ -179,9 +179,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
-* Thu Apr 25 2013 Matthias Clasen <mclasen@redhat.com> - 0.8.8-7
-- Don't use /lib/udev in file paths
-
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.8-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
