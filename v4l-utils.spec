@@ -1,31 +1,16 @@
 Name:           v4l-utils
-Version:        0.8.8
-Release:        6%{?dist}
+Version:        0.9.5
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
-# Bugfixes from upstream git, these can all be dropped with the next release
-Patch1:         0001-dvb-Fix-spelling-errors-found-by-lintian.patch
-Patch2:         0002-libv4lconvert-Fix-decoding-of-160x120-Pixart-JPEG-im.patch
-Patch3:         0003-Revert-tinyjpeg-Better-luminance-quantization-table-.patch
-Patch4:         0004-libv4lconvert-Dynamic-quantization-tables-for-Pixart.patch
-Patch5:         0005-libv4lconvert-Drop-Pixart-JPEG-frames-with-changing-.patch
-Patch6:         0006-libv4lconvert-Further-Pixart-JPEG-decompression-twea.patch
-Patch7:         0007-libv4lconvert-Fix-interpretation-of-bit-7-of-the-Pix.patch
-Patch8:         0008-libv4lcontrol-Add-another-USB-ID-to-ASUS-table.patch
-Patch9:         0009-libv4lcontrol-Add-Lenovo-Thinkpad-X220-Tablet-to-ups.patch
-Patch10:        0010-libv4l2-Improve-VIDIOC_-_FMT-logging.patch
-Patch11:        0011-libv4lconvert-replace-strndupa-with-more-portable-st.patch
-Patch12:        0012-libdvbv5-Add-missing-includes.patch
-Patch13:        0013-libv4l2-Ensure-we-always-set-buf-length-when-convert.patch
-Patch14:        0014-libv4l2-dqbuf-Don-t-requeue-buffers-which-we-are-ret.patch
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
 # For /lib/udev/rules.d ownership
 Requires:       udev
-Requires:       libv4l = %{version}-%{release}
+Requires:       libv4l%{?_isa} = %{version}-%{release}
 
 %description
 v4l-utils is a collection of various video4linux (V4L) and DVB utilities. The
@@ -37,7 +22,7 @@ v4l2-sysfs-path.
 Summary:        Utilities for v4l2 / DVB driver development and debugging
 # decode_tm6000 is GPLv2 only
 License:        GPLv2+ and GPLv2
-Requires:       libv4l = %{version}-%{release}
+Requires:       libv4l%{?_isa} = %{version}-%{release}
 
 %description    devel-tools
 Utilities for v4l2 / DVB driver authors: decode_tm6000, v4l2-compliance and
@@ -47,7 +32,7 @@ v4l2-dbg.
 %package -n     qv4l2
 Summary:        QT v4l2 test control and streaming test application
 License:        GPLv2+
-Requires:       libv4l = %{version}-%{release}
+Requires:       libv4l%{?_isa} = %{version}-%{release}
 
 %description -n qv4l2
 QT v4l2 test control and streaming test application.
@@ -83,7 +68,7 @@ Summary:        Development files for libv4l
 Group:          Development/Libraries
 License:        LGPLv2+
 URL:            http://hansdegoede.livejournal.com/3636.html
-Requires:       libv4l = %{version}-%{release}
+Requires:       libv4l%{?_isa} = %{version}-%{release}
 
 %description -n libv4l-devel
 The libv4l-devel package contains libraries and header files for
@@ -92,29 +77,20 @@ developing applications that use libv4l.
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
 
 
 %build
-make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" \
-  PREFIX=%{_prefix} LIBDIR=%{_libdir}
+%configure --disable-static
+# Don't use rpath!
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+make %{?_smp_mflags}
 
 
 %install
-make install PREFIX=%{_prefix} LIBDIR=%{_libdir} DESTDIR=$RPM_BUILD_ROOT
+%make_install
+find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
+rm $RPM_BUILD_ROOT%{_libdir}/{v4l1compat.so,v4l2convert.so}
 desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/qv4l2.desktop
 
 
@@ -136,49 +112,53 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files
-%defattr(-,root,root,-)
 %doc README
 %dir %{_sysconfdir}/rc_keymaps
-%config(noreplace) %{_sysconfdir}/rc_keymaps/*
 %config(noreplace) %{_sysconfdir}/rc_maps.cfg
-/lib/udev/rules.d/70-infrared.rules
+%{_udevrulesdir}/70-infrared.rules
+%{_prefix}/lib/udev/rc_keymaps/*
 %{_bindir}/cx18-ctl
 %{_bindir}/dvb*
 %{_bindir}/ir-keytable
 %{_bindir}/ivtv-ctl
+%{_bindir}/rds-ctl
 %{_bindir}/v4l2-ctl
 %{_bindir}/v4l2-sysfs-path
 %{_mandir}/man1/ir-keytable.1*
 
 %files devel-tools
-%defattr(-,root,root,-)
 %doc README
 %{_bindir}/decode_tm6000
 %{_bindir}/v4l2-compliance
 %{_sbindir}/v4l2-dbg
 
 %files -n qv4l2
-%defattr(-,root,root,-)
 %doc README
 %{_bindir}/qv4l2
 %{_datadir}/applications/qv4l2.desktop
 %{_datadir}/icons/hicolor/*/apps/qv4l2.*
 
 %files -n libv4l
-%defattr(-,root,root,-)
 %doc COPYING.LIB COPYING ChangeLog README.lib TODO
-%{_libdir}/libv4l*.so.*
+%{_libdir}/libdvbv5.so.*
 %{_libdir}/libv4l
+%{_libdir}/libv4l*.so.*
 
 %files -n libv4l-devel
-%defattr(-,root,root,-)
 %doc README.lib-multi-threading
+%{_includedir}/dvb*.h
 %{_includedir}/libv4l*.h
+%{_libdir}/libdvbv5.so
 %{_libdir}/libv4l*.so
+%{_libdir}/pkgconfig/libdvbv5*.pc
 %{_libdir}/pkgconfig/libv4l*.pc
 
 
 %changelog
+* Sun Jun  9 2013 Hans de Goede <hdegoede@redhat.com> - 0.9.5-1
+- New upstream release 0.9.5 (rhbz#970412)
+- Modernize specfile a bit
+
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.8-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
