@@ -1,0 +1,31 @@
+From 38d8bf17783cda83ec05920094896c9275835529 Mon Sep 17 00:00:00 2001
+From: Hans de Goede <hdegoede@redhat.com>
+Date: Sun, 9 Jun 2013 16:31:55 +0200
+Subject: [PATCH 6/6] libv4l2: Add logging of dqbuf timestamps to debug logging
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ lib/libv4l2/log.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/lib/libv4l2/log.c b/lib/libv4l2/log.c
+index 45c0e6b..8aa5310 100644
+--- a/lib/libv4l2/log.c
++++ b/lib/libv4l2/log.c
+@@ -173,6 +173,13 @@ void v4l2_log_ioctl(unsigned long int request, void *arg, int result)
+ 				req->count, (int)req->type, (int)req->memory);
+ 		break;
+ 	}
++	case VIDIOC_DQBUF: {
++		struct v4l2_buffer *buf = arg;
++		fprintf(v4l2_log_file, "  timestamp %ld.%06ld\n",
++			(long)buf->timestamp.tv_sec,
++			(long)buf->timestamp.tv_usec);
++		break;
++	}
+ 	case VIDIOC_ENUM_FRAMESIZES: {
+ 		struct v4l2_frmsizeenum *frmsize = arg;
+ 		int pixfmt = frmsize->pixel_format;
+-- 
+1.8.2.1
+

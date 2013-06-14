@@ -1,0 +1,49 @@
+From 3941ad41dc97bea2a87c3a9e165a251eb551c54f Mon Sep 17 00:00:00 2001
+From: Hans Verkuil <hans.verkuil@cisco.com>
+Date: Sun, 2 Jun 2013 13:32:01 +0200
+Subject: [PATCH 1/6] rds-ctl: fix percentage handling.
+
+The block_cnt can be 0, and in that case the percentage becomes -nan.
+Fix this.
+
+Signed-off-by: Hans Verkuil <hans.verkuil@cisco.com>
+---
+ utils/rds-ctl/rds-ctl.cpp | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/utils/rds-ctl/rds-ctl.cpp b/utils/rds-ctl/rds-ctl.cpp
+index de76d9f..191cfee 100644
+--- a/utils/rds-ctl/rds-ctl.cpp
++++ b/utils/rds-ctl/rds-ctl.cpp
+@@ -523,16 +523,23 @@ static void print_rds_statistics(const struct v4l2_rds_statistics *statistics)
+ 	printf("received blocks / received groups: %u / %u\n",
+ 		statistics->block_cnt, statistics->group_cnt);
+ 
+-	float block_error_percentage =
+-	((float)statistics->block_error_cnt / statistics->block_cnt) * 100.0;
++	float block_error_percentage = 0;
++
++	if (statistics->block_cnt)
++		block_error_percentage =
++			((float)statistics->block_error_cnt / statistics->block_cnt) * 100.0;
+ 	printf("block errors / group errors: %u (%3.2f%%) / %u \n",
+ 		statistics->block_error_cnt,
+ 		block_error_percentage, statistics->group_error_cnt);
+-	float block_corrected_percentage =
+-	((float)statistics->block_corrected_cnt / statistics->block_cnt) * 100.0;
++
++	float block_corrected_percentage = 0;
++
++	if (statistics->block_cnt)
++		block_corrected_percentage = (
++			(float)statistics->block_corrected_cnt / statistics->block_cnt) * 100.0;
+ 	printf("corrected blocks: %u (%3.2f%%)\n",
+ 		statistics->block_corrected_cnt, block_corrected_percentage);
+-	for(int i=0; i<16; i++)
++	for (int i = 0; i < 16; i++)
+ 		printf("Group %02d: %u\n", i, statistics->group_type_cnt[i]);
+ }
+ 
+-- 
+1.8.2.1
+
