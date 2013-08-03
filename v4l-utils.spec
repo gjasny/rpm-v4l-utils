@@ -1,18 +1,12 @@
 Name:           v4l-utils
-Version:        0.9.5
-Release:        2%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
-Patch1:         0001-rds-ctl-fix-percentage-handling.patch
-Patch2:         0002-libv4l2rds-support-RDS-EON-and-TMC-tuning-info.patch
-Patch3:         0003-rds-ctl-support-RDS-EON-and-TMC-tuning-info.patch
-Patch4:         0004-libv4l2rds.c-moving-functions-to-get-rid-of-declarat.patch
-Patch5:         0005-rds-ctl-support-d10-to-refer-to-radio10.patch
-Patch6:         0006-libv4l2-Add-logging-of-dqbuf-timestamps-to-debug-log.patch
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
 # For /lib/udev/rules.d ownership
 Requires:       udev
@@ -83,12 +77,6 @@ developing applications that use libv4l.
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
 
 
 %build
@@ -151,22 +139,22 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/*/apps/qv4l2.*
 
 %files -n libv4l
-%doc COPYING.LIB COPYING ChangeLog README.lib TODO
-%{_libdir}/libdvbv5.so.*
+%doc COPYING.libv4l COPYING ChangeLog README.libv4l TODO
 %{_libdir}/libv4l
 %{_libdir}/libv4l*.so.*
 
 %files -n libv4l-devel
 %doc README.lib-multi-threading
-%{_includedir}/dvb*.h
 %{_includedir}/libv4l*.h
-%{_libdir}/libdvbv5.so
 %{_libdir}/libv4l*.so
-%{_libdir}/pkgconfig/libdvbv5*.pc
 %{_libdir}/pkgconfig/libv4l*.pc
 
 
 %changelog
+* Sat Aug  3 2013 Hans de Goede <hdegoede@redhat.com> - 1.0.0-1
+- New upstream release 1.0.0 final
+- Drop libdvb5 (made private upstream for now)
+
 * Fri Jun 14 2013 Hans de Goede <hdegoede@redhat.com> - 0.9.5-2
 - Add a few libv4l2rds patches from upstream, which bring libv4l2rds to its
   final API / ABI, so that apps build against it won't need a rebuild in the
