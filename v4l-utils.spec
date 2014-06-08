@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -151,6 +151,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Sat Aug  3 2013 Hans de Goede <hdegoede@redhat.com> - 1.0.0-1
 - New upstream release 1.0.0 final
 - Drop libdvb5 (made private upstream for now)
