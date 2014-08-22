@@ -66,8 +66,7 @@ application transparent libv4lconvert conversion where necessary.
 %package -n     libdvbv5
 Summary:        Libraries to control, scan and zap on Digital TV channels
 Group:          Development/Libraries
-License:        GPLv2+
-Requires:       libv4l%{?_isa} = %{version}-%{release}
+License:        GPLv2
 
 %description -n libdvbv5
 Libraries to control, scan and zap on Digital TV channels
@@ -186,6 +185,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-3
+- Add ALSA support on qv4l2 and fix a couple issues at spec file
+
 * Thu Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-2
 - Update to version 1.2.1 and add package for libdvbv5
 
