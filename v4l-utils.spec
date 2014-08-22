@@ -1,9 +1,9 @@
 Name:           v4l-utils
-Version:        1.0.0
-Release:        3%{?dist}
+Version:        1.2.1
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
-# ir-keytable and v4l2-sysfs-path are GPLv2 only
+# libdvbv5, dvbv5 utils, ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
@@ -63,6 +63,15 @@ libv4l2 offers the v4l2 API on top of v4l2 devices, while adding for the
 application transparent libv4lconvert conversion where necessary.
 
 
+%package -n     libdvbv5
+Summary:        Libraries to control, scan and zap on Digital TV channels
+Group:          Development/Libraries
+License:        GPLv2+
+Requires:       libv4l%{?_isa} = %{version}-%{release}
+
+%description -n libdvbv5
+Libraries to control, scan and zap on Digital TV channels
+
 %package -n     libv4l-devel
 Summary:        Development files for libv4l
 Group:          Development/Libraries
@@ -75,12 +84,23 @@ The libv4l-devel package contains libraries and header files for
 developing applications that use libv4l.
 
 
+%package -n     libdvbv5-devel
+Summary:        Development files for libdvbv5
+Group:          Development/Libraries
+License:        GPLv2
+Requires:       libdvbv5%{?_isa} = %{version}-%{release}
+
+%description -n libdvbv5-devel
+The libdvbv5-devel package contains libraries and header
+files for developing applications that use libdvbv5.
+
+
 %prep
 %setup -q
 
 
 %build
-%configure --disable-static
+%configure --disable-static --enable-libdvbv5
 # Don't use rpath!
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -97,6 +117,10 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/qv4l2.desktop
 %post -n libv4l -p /sbin/ldconfig
 
 %postun -n libv4l -p /sbin/ldconfig
+
+%post -n libdvbv5 -p /sbin/ldconfig
+
+%postun -n libdvbv5 -p /sbin/ldconfig
 
 %post -n qv4l2
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -121,10 +145,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/dvb*
 %{_bindir}/ir-keytable
 %{_bindir}/ivtv-ctl
+%{_bindir}/media-ctl
 %{_bindir}/rds-ctl
 %{_bindir}/v4l2-ctl
 %{_bindir}/v4l2-sysfs-path
 %{_mandir}/man1/ir-keytable.1*
+%{_mandir}/man1/qv4l2.1*
 
 %files devel-tools
 %doc README
@@ -149,8 +175,21 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libv4l*.so
 %{_libdir}/pkgconfig/libv4l*.pc
 
+%files -n libdvbv5
+%doc COPYING ChangeLog lib/libdvbv5/README
+%{_libdir}/libdvbv5*.so.*
+
+%files -n libdvbv5-devel
+%doc README.lib-multi-threading
+%{_includedir}/libdvbv5/*.h
+%{_libdir}/libdvbv5*.so
+%{_libdir}/pkgconfig/libdvbv5*.pc
+
 
 %changelog
+* Thu Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-1
+- Update to version 1.2.1 and add package for libdvbv5
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
