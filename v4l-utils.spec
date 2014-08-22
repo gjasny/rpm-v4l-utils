@@ -185,7 +185,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
-* Fri Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-3
+* Fri Aug 22 2014 Mauro Carvalho Chehab - 1.2.1-3
 - Add ALSA support on qv4l2 and fix a couple issues at spec file
 
 * Thu Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-2
