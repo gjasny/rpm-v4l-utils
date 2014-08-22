@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        1.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # libdvbv5, dvbv5 utils, ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -180,14 +180,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libdvbv5*.so.*
 
 %files -n libdvbv5-devel
-%doc README.lib-multi-threading
 %{_includedir}/libdvbv5/*.h
 %{_libdir}/libdvbv5*.so
 %{_libdir}/pkgconfig/libdvbv5*.pc
 
 
 %changelog
-* Thu Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-1
+* Thu Aug 21 2014 Mauro Carvalho Chehab - 1.2.1-2
 - Update to version 1.2.1 and add package for libdvbv5
 
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.0-3
