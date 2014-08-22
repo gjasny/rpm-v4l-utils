@@ -7,7 +7,7 @@ Group:          Applications/System
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
-BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
+BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils alsa-lib-devel
 # For /lib/udev/rules.d ownership
 Requires:       udev
 Requires:       libv4l%{?_isa} = %{version}-%{release}
