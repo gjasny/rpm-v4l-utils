@@ -1,13 +1,14 @@
 Name:           v4l-utils
-Version:        1.2.1
-Release:        3%{?dist}
+Version:        1.4.0
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # libdvbv5, dvbv5 utils, ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
-BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils alsa-lib-devel
+BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
+BuildRequires:  alsa-lib-devel doxygen
 # For /lib/udev/rules.d ownership
 Requires:       udev
 Requires:       libv4l%{?_isa} = %{version}-%{release}
@@ -99,17 +100,21 @@ files for developing applications that use libdvbv5.
 
 
 %build
-%configure --disable-static --enable-libdvbv5
+%configure --disable-static --enable-libdvbv5 --enable-doxygen-man
 # Don't use rpath!
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make %{?_smp_mflags}
+make doxygen-run
 
 
 %install
 %make_install
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 rm $RPM_BUILD_ROOT%{_libdir}/{v4l1compat.so,v4l2convert.so}
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3/
+cp -arv %{_builddir}/%{name}-%{version}/doxygen-doc/man/man3 $RPM_BUILD_ROOT%{_mandir}/
+rm $RPM_BUILD_ROOT%{_mandir}/man3/_*3
 desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/qv4l2.desktop
 
 
@@ -182,9 +187,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_includedir}/libdvbv5/*.h
 %{_libdir}/libdvbv5*.so
 %{_libdir}/pkgconfig/libdvbv5*.pc
+%{_mandir}/man3/*.3*
 
 
 %changelog
+* Mon Sep 08 2014 Mauro Carvalho Chehab - 1.4.0-1
+- Upgrade to version 1.4.0
+
 * Fri Aug 22 2014 Mauro Carvalho Chehab - 1.2.1-3
 - Add ALSA support on qv4l2 and fix a couple issues at spec file
 
