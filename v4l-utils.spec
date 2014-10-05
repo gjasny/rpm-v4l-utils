@@ -1,5 +1,5 @@
 Name:           v4l-utils
-Version:        1.4.0
+Version:        1.6.0
 Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
@@ -153,8 +153,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/rds-ctl
 %{_bindir}/v4l2-ctl
 %{_bindir}/v4l2-sysfs-path
-%{_mandir}/man1/ir-keytable.1*
-%{_mandir}/man1/qv4l2.1*
+%{_mandir}/man1/*.1*
 
 %files devel-tools
 %doc README
@@ -191,6 +190,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Oct 05 2014 Mauro Carvalho Chehab - 1.6.0-1
+- Upgrade to version 1.6.0
+
 * Mon Sep 08 2014 Mauro Carvalho Chehab - 1.4.0-1
 - Upgrade to version 1.4.0
 
