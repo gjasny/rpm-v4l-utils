@@ -1,12 +1,13 @@
 Name:           v4l-utils
 Version:        1.6.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # libdvbv5, dvbv5 utils, ir-keytable and v4l2-sysfs-path are GPLv2 only
 License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
+Patch1:         0001-v4lconvert-Fix-decoding-of-jpeg-data-with-no-vertica.patch
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
 BuildRequires:  alsa-lib-devel doxygen
 # For /lib/udev/rules.d ownership
@@ -97,6 +98,7 @@ files for developing applications that use libdvbv5.
 
 %prep
 %setup -q
+%patch1 -p1
 
 
 %build
@@ -190,6 +192,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Nov 20 2014 Hans de Goede <hdegoede@redhat.com> - 1.6.0-2
+- Fix crash when decoding 1920x1080 jpeg to YUV420
+
 * Sun Oct 05 2014 Mauro Carvalho Chehab - 1.6.0-1
 - Upgrade to version 1.6.0
 
