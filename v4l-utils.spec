@@ -1,6 +1,6 @@
 Name:           v4l-utils
 Version:        1.6.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # libdvbv5, dvbv5 utils, ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -190,6 +190,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 1.6.2-2
+- Rebuilt for GCC 5 C++11 ABI change
+
 * Sat Nov 22 2014 Mauro Carvalho Chehab <mchehab@osg.samsung.com> - 1.6.2-1
 - Update to version 1.6.2 with contains several bugfixes
 
