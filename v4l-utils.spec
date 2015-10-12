@@ -1,6 +1,6 @@
 Name:           v4l-utils
-Version:        1.6.2
-Release:        3%{?dist}
+Version:        1.8.0
+Release:        1%{?dist}
 Summary:        Utilities for video4linux and DVB devices
 Group:          Applications/System
 # libdvbv5, dvbv5 utils, ir-keytable and v4l2-sysfs-path are GPLv2 only
@@ -8,7 +8,7 @@ License:        GPLv2+ and GPLv2
 URL:            http://www.linuxtv.org/downloads/v4l-utils/
 Source0:        http://linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
 BuildRequires:  libjpeg-devel qt4-devel kernel-headers desktop-file-utils
-BuildRequires:  alsa-lib-devel doxygen
+BuildRequires:  alsa-lib-devel doxygen gettext
 # For /lib/udev/rules.d ownership
 Requires:       udev
 Requires:       libv4l%{?_isa} = %{version}-%{release}
@@ -116,6 +116,8 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3/
 cp -arv %{_builddir}/%{name}-%{version}/doxygen-doc/man/man3 $RPM_BUILD_ROOT%{_mandir}/
 rm $RPM_BUILD_ROOT%{_mandir}/man3/_*3
 desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/qv4l2.desktop
+%find_lang %{name}
+%find_lang libdvbv5
 
 
 %post -n libv4l -p /sbin/ldconfig
@@ -139,7 +141,7 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
-%files
+%files -f %{name}.lang -f libdvbv5.lang
 %doc README
 %dir %{_sysconfdir}/rc_keymaps
 %config(noreplace) %{_sysconfdir}/rc_maps.cfg
@@ -154,11 +156,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/v4l2-ctl
 %{_bindir}/v4l2-sysfs-path
 %{_mandir}/man1/*.1*
+%exclude %{_mandir}/man1/qv4l2.1*
+%exclude %{_mandir}/man1/v4l2-compliance.1*
 
 %files devel-tools
 %doc README
 %{_bindir}/decode_tm6000
 %{_bindir}/v4l2-compliance
+%{_mandir}/man1/v4l2-compliance.1*
 %{_sbindir}/v4l2-dbg
 
 %files -n qv4l2
@@ -166,6 +171,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/qv4l2
 %{_datadir}/applications/qv4l2.desktop
 %{_datadir}/icons/hicolor/*/apps/qv4l2.*
+%{_mandir}/man1/qv4l2.1*
 
 %files -n libv4l
 %doc COPYING.libv4l COPYING ChangeLog README.libv4l TODO
@@ -190,6 +196,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Oct 12 2015 Gregor Jasny <gjasny@googlemail.com> - 1.8.0-1
+- Upgrade to version 1.8.0
+
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
